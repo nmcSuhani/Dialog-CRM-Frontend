@@ -35,7 +35,9 @@ const defaultCallHistoryData = [
   { day: 'Sun', connected: 18, failed: 3 },
 ];
 
-const defaultStageRevenueData = [
+type StageRevenueItem = { stage: string; value: number };
+
+const defaultStageRevenueData: StageRevenueItem[] = [
   { stage: 'Leads', value: 12000 },
   { stage: 'Qualified', value: 34000 },
   { stage: 'Proposal', value: 58000 },
@@ -96,7 +98,7 @@ export const DashboardView: React.FC = () => {
       }))
     : defaultCallHistoryData;
 
-  const stageRevenueData = leadsAnalytics?.pipeline_funnel && leadsAnalytics.pipeline_funnel.length > 0
+  const stageRevenueData: StageRevenueItem[] = leadsAnalytics?.pipeline_funnel && leadsAnalytics.pipeline_funnel.length > 0
     ? leadsAnalytics.pipeline_funnel.map((item: any) => ({
         stage: item.stage.split(' ')[0],
         value: item.value
@@ -296,7 +298,7 @@ export const DashboardView: React.FC = () => {
                   contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', borderRadius: '12px', color: '#f4f4f5' }}
                 />
                 <Bar dataKey="value" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
-                  {stageRevenueData.map((entry, idx) => (
+                  {stageRevenueData.map((_, idx) => (
                     <Cell 
                       key={`cell-${idx}`} 
                       fill={idx === 4 ? '#10b981' : '#8b5cf6'} 

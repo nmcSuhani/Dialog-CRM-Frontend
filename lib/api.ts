@@ -156,15 +156,15 @@ export function mapBackendContact(c: any): Contact {
 }
 
 export function mapBackendDeal(d: any, contacts: Contact[] = []): Deal {
-  const contact = contacts.find(c => c.id === d.contact_id) || {};
+  const contact = contacts.find(c => c.id === d.contact_id);
   return {
     id: d.id,
     title: d.title,
     value: parseFloat(d.value),
     stageId: d.stage_id,
     contactId: d.contact_id,
-    contactName: contact.name || 'Unknown Contact',
-    companyName: contact.company || 'Independent',
+    contactName: contact?.name || 'Unknown Contact',
+    companyName: contact?.company || 'Independent',
     status: d.status === 'open' ? 'active' : d.status,
     probability: d.probability,
     expectedCloseDate: d.expected_close_date || d.created_at?.split('T')[0] || ''
@@ -250,7 +250,7 @@ export function mapBackendCampaign(c: any, agents: CrmAgent[] = []): Campaign {
 }
 
 export function mapBackendCall(c: any, contacts: Contact[] = []): CallLog {
-  const contact = contacts.find(con => con.id === c.contact_id) || {};
+  const contact = contacts.find(con => con.id === c.contact_id);
   const sentiment = c.detected_intent === 'interested' ? 'positive' : c.detected_intent === 'not_interested' ? 'negative' : 'neutral';
   
   const transcription = (c.live_transcript || []).map((t: any) => ({
@@ -262,7 +262,7 @@ export function mapBackendCall(c: any, contacts: Contact[] = []): CallLog {
   return {
     id: c.id,
     contactId: c.contact_id || '',
-    contactName: contact.name || `Phone ${c.phone}`,
+    contactName: contact?.name || `Phone ${c.phone}`,
     phoneNumber: c.phone,
     direction: c.direction,
     status: c.status === 'ended' ? 'completed' : c.status,
